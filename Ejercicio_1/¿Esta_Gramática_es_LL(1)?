@@ -1,0 +1,15 @@
+¿Esta gramatica es LL(1)?
+
+No.
+Hay conflicto en S:
+
+P(S -> A B C) = { dos, cuatro, seis, $ }
+
+P(S -> D E) = { uno, cuatro, tres }
+
+Intersección no vacía: 'cuatro' ∈ ambas. 
+Entonces no es LL(1) (el parser predictivo no puede decidir entre las dos producciones de S con un solo símbolo de entrada 'cuatro').
+
+Causa: D -> B y B2 -> cuatro ... hacen que ambas alternativas de S puedan comenzar con cuatro.
+Para que fuese LL(1) habría que refactorizar (por ejemplo, factorizar/reescribir reglas que causan el solapamiento)
+o usar backtracking / parser no predictivo.
