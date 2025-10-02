@@ -1,0 +1,5 @@
+S  → A B C S'
+S' → uno S' | ε
+A  → dos B C | ε
+B  → C tres | ε
+C  → cuatro B | ε
