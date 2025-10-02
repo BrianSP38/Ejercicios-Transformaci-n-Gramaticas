@@ -1,0 +1,12 @@
+S -> A B C     : { dos, cuatro, seis, $ }
+S -> D E       : { uno, cuatro, tres }
+A -> dos B tres: { dos }
+A -> ε         : { $, cinco, cuatro, seis, tres }  
+B -> B2        : { cuatro, $, cinco, seis, tres }  
+B2 -> cuatro C cinco B2 : { cuatro }
+B2 -> ε        : { $, cinco, seis, tres }
+C -> seis A B  : { seis }
+C -> ε         : { $, cinco }
+D -> uno A E   : { uno }
+D -> B         : { cuatro, tres }   
+E -> tres      : { tres }
