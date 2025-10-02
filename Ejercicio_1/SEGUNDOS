@@ -1,0 +1,9 @@
+(uso $ para fin de cadena)
+
+FOLLOW(S)  = { $ }
+FOLLOW(A)  = { $, cuatro, cinco, seis, tres } 
+FOLLOW(B)  = { $, cinco, seis, tres }
+FOLLOW(B2) = { $, cinco, seis, tres }   # B -> B2 ⇒ mismos siguientes que B
+FOLLOW(C)  = { $, cinco }
+FOLLOW(D)  = { tres }
+FOLLOW(E)  = { $, tres }
