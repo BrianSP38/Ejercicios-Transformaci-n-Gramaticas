@@ -1,0 +1,15 @@
+No.
+
+Ejemplo de conflicto:
+
+En S las alternativas:
+
+S -> B uno tiene predicción { uno, cuatro, dos, tres, cinco }
+
+S -> dos C tiene predicción { dos }
+
+S -> ε tiene predicción { $, tres }
+
+La alternativa S->B uno incluye dos en su conjunto de predicción (porque B puede derivar A->S->dos...), por lo que S->B uno y S->dos C se solapan en dos. 
+Hay también solapamientos con tres y otros símbolos. Por tanto no es LL(1). 
+De nuevo, la solución sería reescribir / factorizar la gramática o usar un parser con backtracking o una estrategia distinta (LR, etc.).
