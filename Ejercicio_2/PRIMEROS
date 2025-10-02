@@ -1,0 +1,4 @@
+FIRST(S) = { dos, uno, tres, cuatro, cinco, epsilon } 
+FIRST(A) = { cuatro, dos, uno, tres, cinco, epsilon }
+FIRST(B) = { cuatro, dos, uno, tres, cinco, epsilon }
+FIRST(C) = { siete, epsilon }
