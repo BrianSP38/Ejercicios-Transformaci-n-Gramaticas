@@ -1,0 +1,5 @@
+FIRST(S)  = { dos, cuatro, tres, uno, ε }
+FIRST(S') = { uno, ε }
+FIRST(A)  = { dos, ε }
+FIRST(B)  = { cuatro, tres, ε }
+FIRST(C)  = { cuatro, ε }
