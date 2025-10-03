@@ -1,0 +1,46 @@
+S → A B C S'
+
+FIRST( RHS ) = { dos, cuatro, tres, uno, ε }
+
+SELECT = { dos, cuatro, tres, uno } ∪ (como RHS nullable) FOLLOW(S) = { $ }
+=> SELECT(S → A B C S') = { dos, cuatro, tres, uno, $ }
+
+S' → uno S'
+
+FIRST = { uno }
+=> SELECT = { uno }
+
+S' → ε
+
+ε en FIRST → SELECT = FOLLOW(S') = { $ }
+=> SELECT = { $ }
+
+A → dos B C
+
+FIRST = { dos }
+=> SELECT = { dos }
+
+A → ε
+
+ε en FIRST → SELECT = FOLLOW(A) = { cuatro, tres, uno, $ }
+=> SELECT = { cuatro, tres, uno, $ }
+
+B → C tres
+
+FIRST(C tres) = { cuatro, tres }
+=> SELECT = { cuatro, tres }
+
+B → ε
+
+ε en FIRST → SELECT = FOLLOW(B) = { cuatro, tres, uno, $ }
+=> SELECT = { cuatro, tres, uno, $ }
+
+C → cuatro B
+
+FIRST = { cuatro }
+=> SELECT = { cuatro }
+
+C → ε
+
+ε → SELECT = FOLLOW(C) = { uno, cuatro, tres, $ }
+=> SELECT = { uno, cuatro, tres, $ }
