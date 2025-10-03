@@ -1,0 +1,20 @@
+No, no es LL(1).
+
+Motivo: para un no terminal las SELECT de sus producciones deben ser disjuntas. 
+Aquí hay solapamientos:
+
+Para B:
+
+SELECT(B → C tres) = { cuatro, tres }
+
+SELECT(B → ε) = { cuatro, tres, uno, $ }
+→ Intersección ≠ ∅ (tienen cuatro y tres en común). Conflicto.
+
+Para C:
+
+SELECT(C → cuatro B) = { cuatro }
+
+SELECT(C → ε) = { uno, cuatro, tres, $ }
+→ Intersección en cuatro. Conflicto.
+
+Debido a esos solapamientos no se puede elegir una producción sólo con un token de lookahead en los casos conflictivos ⇒ no LL(1).
