@@ -1,62 +1,88 @@
+# ASDR con backtracking
+class Tokenizer:
+    def __init__(self, tokens):
+        self.tokens = tokens + ['$']
+        self.i = 0
+    def lookahead(self):
+        return self.tokens[self.i]
+    def consume(self, expected=None):
+        t = self.tokens[self.i]
+        if expected is not None and t != expected:
+            raise SyntaxError(f"Se esperaba '{expected}' pero vino '{t}'")
+        self.i += 1
+        return t
+    def pos(self):
+        return self.i
+    def set_pos(self, p):
+        self.i = p
 
-tokens = [...]
-pos = 0
-def lookahead(): ...
-def match(tok): ...
+class Parser2:
+    def __init__(self, tok: Tokenizer):
+        self.tok = tok
 
-# Funciones para Ejercicio 2
+    def try_rule(self, func):
+        saved = self.tok.pos()
+        try:
+            func()
+            return True
+        except SyntaxError:
+            self.tok.set_pos(saved)
+            return False
 
-def S():
-    la = lookahead()
-    if la in {'dos'}:
-        match('dos')
-        C()
-    elif la in {'uno','cuatro','tres','cinco'}:
-        # Nota: esto incluye 'dos' también en teoría por derivaciones de B,
-        # pero aquí separamos 'dos' explicitamente arriba para evitar ambiguedad parcial.
-        B()
-        match('uno')
-    elif la in {'$', 'tres'}:
-        # S -> epsilon (si la está en FOLLOW(S)) ; cuidado: 'tres' también está en predicción de S->B uno
-        # por ello hay conflicto en 'tres' (requiere reescritura o backtracking)
-        return
-    else:
-        raise SyntaxError("error en S")
-
-def A():
-    la = lookahead()
-    if la in {'uno','dos','cuatro','tres','cinco'}:
-        if la == 'cuatro':
-            match('cuatro')
+    def parse_S(self):
+        if self.try_rule(self._parse_B_uno):
             return
+        if self.try_rule(self._parse_dos_C):
+            return
+        return
+
+    def _parse_B_uno(self):
+        self.parse_B()
+        self.tok.consume('uno')
+
+    def _parse_dos_C(self):
+        self.tok.consume('dos')
+        self.parse_C()
+
+    def parse_A(self):
+        la = self.tok.lookahead()
+        if la == 'cuatro':
+            self.tok.consume('cuatro')
+            return
+        if self.try_rule(self._parse_S_tres_B_C):
+            return
+        return
+
+    def _parse_S_tres_B_C(self):
+        self.parse_S()
+        self.tok.consume('tres')
+        self.parse_B()
+        self.parse_C()
+
+    def parse_B(self):
+        if self.try_rule(self._parse_A_cinco_C_seis):
+            return
+        return
+
+    def _parse_A_cinco_C_seis(self):
+        self.parse_A()
+        self.tok.consume('cinco')
+        self.parse_C()
+        self.tok.consume('seis')
+
+    def parse_C(self):
+        la = self.tok.lookahead()
+        if la == 'siete':
+            self.tok.consume('siete')
+            self.parse_B()
         else:
-            S()
-            match('tres')
-            B()
-            C()
-    elif la == 'cinco':
-        return
-    else:
-        raise SyntaxError("error en A")
+            return
 
-def B():
-    la = lookahead()
-    if la in {'uno','dos','cuatro','tres','cinco'}:
-        A()
-        match('cinco')
-        C()
-        match('seis')
-    elif la in {'$','cinco','seis','siete','tres','uno'}:
-        return
-    else:
-        raise SyntaxError("error en B")
-
-def C():
-    la = lookahead()
-    if la == 'siete':
-        match('siete')
-        B()
-    elif la in {'$','cinco','seis','tres'}:
-        return
-    else:
-        raise SyntaxError("error en C")
+# Función de prueba / uso
+def test2(tokens):
+    tok = Tokenizer(tokens)
+    p = Parser2(tok)
+    p.parse_S() 
+    if tok.lookahead() != '$':
+        raise SyntaxError("Entrada no consumida completamente (Ej2)")
+    print("Ej2: OK — cadena aceptada")
